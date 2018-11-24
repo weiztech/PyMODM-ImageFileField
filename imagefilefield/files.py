@@ -11,13 +11,31 @@ from imagefilefield.smartcrop import smart_crop
 
 class ImageFieldToFile(ImageFieldFile):
 
+    @property
+    def images(self):
+        sizes = self.get_sizes
+        media_url = self.field.media_url
+        images = {}
+
+        for key in sizes.keys():
+            media_path = path.join(
+                media_url,
+                "{}_{}.{}".format(key, str(self.file_id), self.image.format.lower()))
+            media_path = ("{:%s}" % (media_path)).format(self.file.uploadDate)
+            images[key] = media_path
+        return images
+
+    @property
+    def get_sizes(self):
+        return self.field.image_sizes or getattr(self.instance, "IMAGE_SIZES", None)
+
     def create_image_path(self, key: str) -> str:
         # file path
         fpath = path.join(
             self.field.upload_to,
             "{}_{}.{}".format(key, str(self.file_id), self.image.format.lower()))
         fpath = "{:%s}" % (fpath)
-        fpath = fpath.format(datetime.now())
+        fpath = fpath.format(datetime.utcnow())
         # try create folder path if not exists
         folder_path = "/".join(fpath.split("/")[:-1])
         try:
@@ -54,7 +72,7 @@ class ImageFieldToFile(ImageFieldFile):
         return fpath
 
     def create_image_sizes(self) -> None:
-        image_sizes = self.field.image_sizes or getattr(self.instance, "IMAGE_SIZES", None)
+        image_sizes = self.get_sizes
         if not image_sizes:
             return
 
