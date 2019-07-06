@@ -14,8 +14,6 @@ imagefilefield.FILEFIELD_MEDIA_URL = "/media/" # Default Value
 
 
 ```
-from os.path import join
-
 from pymodm import MongoModel, fields
 from imagefilefield.fields import ImageFileField
 
@@ -30,11 +28,11 @@ class TestImage(MongoModel):
 
     text = fields.CharField()
     image = ImageFileField(
-        upload_to=join(MEDIA_ROOT, "test_image/%Y/%m/%d/"), 
+        upload_to="test_image/%Y/%m/%d/", 
         blank=True)
     # using custom size
     image2 = ImageFileField(
-        upload_to=join(MEDIA_ROOT, "test_image/%Y/%m/%d/"), 
+        upload_to="test_image/%Y/%m/%d/", 
         blank=True,
         image_sizes = {
           "small": {"size": (200, 100), "smartcrop": True},
