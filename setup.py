@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='PYMODM-IMAGEFILEFIELD',
-      version='0.1',
+      version='1.0',
       description='ImageFileField for PyMODM module',
       url='https://github.com/weiztech/PyMODM-ImageFileField',
       author='Jensen',

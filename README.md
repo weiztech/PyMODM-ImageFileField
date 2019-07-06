@@ -1,6 +1,18 @@
 # PyMODM-ImageFileField
 ImageFileField for PyMODM
 
+Configuration Media Path and Media Url
+```
+import imagefilefield
+
+# Required
+imagefilefield.FILEFIELD_MEDIA_PATH = os.path.join(BASE_DIR, "media/")
+# Optional
+imagefilefield.FILEFIELD_MEDIA_URL = "/media/" # Default Value
+
+```
+
+
 ```
 from os.path import join
 
@@ -19,8 +31,7 @@ class TestImage(MongoModel):
     text = fields.CharField()
     image = ImageFileField(
         upload_to=join(MEDIA_ROOT, "test_image/%Y/%m/%d/"), 
-        blank=True, 
-        media_url=join(MEDIA_URL, "test_image/%Y/%m/%d/"))
+        blank=True)
     # using custom size
     image2 = ImageFileField(
         upload_to=join(MEDIA_ROOT, "test_image/%Y/%m/%d/"), 
@@ -29,8 +40,7 @@ class TestImage(MongoModel):
           "small": {"size": (200, 100), "smartcrop": True},
           "medium": {"size": (525, 625), "smartcrop": True},
           "big": {"size": (700, 700), "smartcrop": True}
-        }
-        media_url=join(MEDIA_URL, "test_image/%Y/%m/%d/"))
+        })
     created = fields.DateTimeField(default=timezone.now)
 
 ```
