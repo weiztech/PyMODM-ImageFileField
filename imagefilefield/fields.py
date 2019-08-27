@@ -1,4 +1,5 @@
 from pymodm.fields import ImageField
+from bson import ObjectId
 
 from imagefilefield.files import ImageFieldToFile
 import imagefilefield
@@ -25,10 +26,15 @@ class ImageFileField(ImageField):
 
     def to_mongo(self, value):
         file_obj = self.to_python(value)
+
+        if isinstance(file_obj, ObjectId):
+            return file_obj
+
         # Save the file and return its name.
         if not file_obj._committed:
             if not self.base_media_path:
-                raise ValueError("imagefilefield.FILEFIELD_MEDIA_PATH cannot be none")
+                raise ValueError(
+                    "imagefilefield.FILEFIELD_MEDIA_PATH cannot be none")
 
             file_obj.save(value.file_id, value)
 
